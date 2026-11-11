@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F2A1E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Al Maidan Directory</title>
+<style>
+:root{--emerald:#0F2A1E;--ink:#14261D;--paper:#F2F5F3;--card:#fff;--rose:#C48C80;--rose-d:#8A5547;--line:#D3DDD8;--mute:#55695F}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
+header{background:var(--emerald);color:#F2F5F3;padding:calc(14px + env(safe-area-inset-top)) 16px 12px}
+header img{display:block;margin:0 auto;height:112px;width:auto}
+header p{margin:2px 0 0;color:#C9B1A8;font-size:.9rem;text-align:center}
+.bar{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+nav{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:none;border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
+nav button[aria-selected=true]{background:var(--emerald);border-color:var(--emerald);color:#fff}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 12px}
+.filters input{grid-column:1/-1}
+.filters input,.filters select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
+:focus-visible{outline:3px solid var(--rose);outline-offset:2px}
+main{padding:14px 16px 90px;max-width:1000px;margin:0 auto}
+.count{color:var(--mute);margin:0 0 10px;font-size:.9rem}
+.grid{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--emerald);border-radius:12px;padding:14px}
+.card.star{border-left-color:var(--rose)}
+.card h2{margin:0;font-size:1.1rem;line-height:1.25}
+.person{margin:2px 0 0;color:var(--mute);font-size:.95rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+.chip{background:#E3EBE6;color:var(--emerald);border-radius:6px;padding:2px 8px;font-size:.82rem;font-weight:600}
+.chip.alt{background:#F5E8E3;color:var(--rose-d)}
+.loc{margin:0;color:var(--mute);font-size:.9rem}
+.notes{margin:8px 0 0;font-size:.93rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.notes.open{-webkit-line-clamp:unset;display:block}
+.more{background:none;border:0;color:var(--rose-d);font:inherit;font-size:.88rem;padding:4px 0;cursor:pointer;text-decoration:underline}
+.acts{display:flex;gap:8px;margin-top:12px}
+.btn{flex:1;text-align:center;padding:11px 10px;border-radius:10px;font-weight:700;text-decoration:none;border:2px solid var(--emerald);color:var(--emerald);background:#fff}
+.btn.wa{background:var(--emerald);color:#fff}
+.nonum{color:var(--mute);font-size:.9rem;margin:12px 0 0}
+.empty,#msg{padding:28px 8px;text-align:center;color:var(--mute)}
+footer{position:fixed;left:0;right:0;bottom:0;background:var(--emerald);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center}
+footer a{color:#fff;text-decoration:none;font-weight:600;border:1px solid #5A7A6A;border-radius:999px;padding:8px 14px;font-size:.92rem}
+footer a.primary{background:var(--rose);border-color:var(--rose);color:#14261D}
+dialog{border:0;border-radius:14px;padding:20px;max-width:340px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(15,42,30,.75)}
+dialog h2{margin:0 0 6px}
+dialog input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;margin:10px 0}
+dialog button{width:100%;padding:12px;border:0;border-radius:10px;background:var(--emerald);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.err{color:#9B2C2C;font-size:.9rem;margin:0}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header>
+  <img src="logo.png" alt="Al Maidan" width="149" height="112">
+  <p>UAE events and production field directory</p>
+</header>
+<div class="bar">
+  <nav id="tabs" role="tablist" aria-label="Departments"></nav>
+  <div class="filters">
+    <input id="q" type="search" placeholder="Search name, service or city" aria-label="Search">
+    <select id="spec" aria-label="Specialty"></select>
+    <select id="focus" aria-label="Works in">
+      <option value="all">Film and events</option>
+      <option value="film">Film and media</option>
+      <option value="live">Live events</option>
+    </select>
+  </div>
+</div>
+<main>
+  <p id="msg">Loading the directory...</p>
+  <p class="count" id="count" hidden></p>
+  <div class="grid" id="list"></div>
+</main>
+<footer id="foot"></footer>
+<dialog id="gate">
+  <h2>Members only</h2>
+  <p>Enter the access code from the Al Maidan WhatsApp group.</p>
+  <p class="err" id="gateErr"></p>
+  <input id="code" type="password" autocomplete="off" placeholder="Access code" aria-label="Access code">
+  <button id="go">Open directory</button>
+</dialog>
+<script>
+/* Set these three values once. */
+const API_URL = "https://script.google.com/macros/s/AKfycbwD01NY3nuKBwYzcWIE4IGwxLxxpwBaeEv5_7Dk2DLMZXetA84KJs-fhfCYVjta-0ypLA/exec";
+const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSes_7RFqVROefShN8wW4js20FlOE13-dZWxmRbVLO_iRIMZpw/viewform";
+const GROUP_URL = "https://chat.whatsapp.com/J0aAb8Ldm892kqbjKAj8MW";
+
+const $ = s => document.querySelector(s);
+let DATA = null, cur = 0;
+
+function el(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+
+function waNumber(p){
+  const first=(p||"").split(/[\/,;]|\bor\b/i)[0];
+  let d=first.replace(/\D/g,"");
+  if(!d)return "";
+  if(d.startsWith("00"))d=d.slice(2);
+  else if(d.startsWith("0"))d="971"+d.slice(1);
+  else if(d.length===9)d="971"+d;
+  return d;
+}
+
+async function load(){
+  const code=localStorage.getItem("am_code")||"";
+  if(API_URL.startsWith("PASTE")){$("#msg").textContent="Setup needed: paste the web app URL into API_URL in index.html.";return}
+  try{
+    const r=await fetch(API_URL+"?code="+encodeURIComponent(code));
+    const j=await r.json();
+    if(j.error){ask(code?j.error:"");return}
+    localStorage.setItem("am_data",JSON.stringify(j));
+    DATA=j;start();
+  }catch(e){
+    const c=localStorage.getItem("am_data");
+    if(c){DATA=JSON.parse(c);start("Offline. Showing the last saved list.")}
+    else $("#msg").textContent="The directory did not load. Check your connection and reopen the app."
+  }
+}
+
+function ask(err){
+  $("#gateErr").textContent=err||"";
+  const g=$("#gate");if(!g.open)g.showModal();
+}
+$("#go").onclick=()=>{
+  localStorage.setItem("am_code",$("#code").value.trim());
+  $("#gate").close();load();
+};
+$("#code").addEventListener("keydown",e=>{if(e.key==="Enter")$("#go").click()});
+
+function start(note){
+  $("#msg").hidden=!note;if(note)$("#msg").textContent=note;
+  const nav=$("#tabs");nav.textContent="";
+  DATA.tabs.forEach((t,i)=>{
+    const b=el("button","",t.name);b.setAttribute("role","tab");b.setAttribute("aria-selected",i===cur);
+    b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));fillSpec();render()};
+    nav.append(b);
+  });
+  const f=$("#foot");f.textContent="";
+  if(GROUP_URL){const a=el("a","","Join the group");a.href=GROUP_URL;a.target="_blank";a.rel="noopener";f.append(a)}
+  const g=el("a","primary","Get listed");g.href=FORM_URL;g.target="_blank";g.rel="noopener";f.append(g);
+  fillSpec();render();
+}
+
+function fillSpec(){
+  const s=$("#spec");s.textContent="";
+  const counts={};
+  DATA.tabs[cur].rows.forEach(r=>{if(r.role)counts[r.role]=(counts[r.role]||0)+1});
+  s.append(new Option("All specialties","")); 
+  Object.keys(counts).sort().forEach(k=>s.append(new Option(k+" ("+counts[k]+")",k)));
+}
+
+function render(){
+  const q=$("#q").value.trim().toLowerCase(),sp=$("#spec").value,fo=$("#focus").value;
+  const rows=DATA.tabs[cur].rows.filter(r=>{
+    if(sp&&r.role!==sp)return false;
+    const f=(r.focus||"").toLowerCase();
+    if(fo==="film"&&f&&!/media|both/.test(f))return false;
+    if(fo==="live"&&f&&!/live|both/.test(f))return false;
+    if(q&&![r.company,r.person,r.role,r.service,r.notes,r.location].join(" ").toLowerCase().includes(q))return false;
+    return true;
+  });
+  const list=$("#list");list.textContent="";
+  const c=$("#count");c.hidden=false;c.textContent=rows.length+(rows.length===1?" listing":" listings");
+  if(!rows.length){list.append(el("p","empty","Nothing matches. Clear a filter or try another word."));return}
+  rows.forEach(r=>{
+    const card=el("article","card"+(r.star?" star":""));
+    const name=r.company||r.person||"Unnamed";
+    const h=el("h2","",name);h.dir="auto";card.append(h);
+    if(r.company&&r.person){const p=el("p","person",r.person);p.dir="auto";card.append(p)}
+    const chips=el("div","chips");
+    if(r.role)chips.append(el("span","chip",r.role));
+    if(r.focus)chips.append(el("span","chip alt",r.focus));
+    if(!r.company)chips.append(el("span","chip alt","Individual"));
+    card.append(chips);
+    if(r.location)card.append(el("p","loc",r.location));
+    const text=r.notes||r.service;
+    if(text){
+      const n=el("p","notes",text);n.dir="auto";card.append(n);
+      if(text.length>140){const m=el("button","more","More");m.onclick=()=>{const o=n.classList.toggle("open");m.textContent=o?"Less":"More"};card.append(m)}
+    }
+    const num=waNumber(r.phone);
+    if(num){
+      const a=el("div","acts");
+      const w=el("a","btn wa","WhatsApp");w.href="https://wa.me/"+num;w.target="_blank";w.rel="noopener";
+      const t=el("a","btn","Call");t.href="tel:+"+num;
+      a.append(w,t);card.append(a);
+    }else card.append(el("p","nonum","No number listed yet"));
+    list.append(card);
+  });
+}
+
+$("#q").oninput=render;$("#spec").onchange=render;$("#focus").onchange=render;
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+load();
+</script>
+</body>
+</html>
