@@ -12,31 +12,36 @@
 :root{--emerald:#0F2A1E;--ink:#14261D;--paper:#F2F5F3;--card:#fff;--rose:#C48C80;--rose-d:#8A5547;--line:#D3DDD8;--mute:#55695F}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;padding-bottom:env(safe-area-inset-bottom)}
-header{background:var(--emerald);color:#F2F5F3;padding:calc(14px + env(safe-area-inset-top)) 16px 12px}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+header{background:var(--emerald);color:#F2F5F3;padding:calc(14px + env(safe-area-inset-top)) 0 16px;text-align:center}
 header img{display:block;margin:0 auto;height:112px;width:auto}
-header p{margin:2px 0 0;color:#C9B1A8;font-size:.9rem;text-align:center}
+header p{margin:2px 0 12px;color:#C9B1A8;font-size:.9rem}
+.cta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cta a{display:block;padding:13px 10px;border-radius:12px;font-weight:700;text-decoration:none;font-size:1rem}
+.cta .join{background:var(--rose);color:#14261D}
+.cta .list{border:2px solid var(--rose);color:#F2F5F3}
 .bar{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
-nav{display:flex;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+nav{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 nav button{flex:none;border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 14px;border-radius:999px;font:inherit;font-weight:600;cursor:pointer}
 nav button[aria-selected=true]{background:var(--emerald);border-color:var(--emerald);color:#fff}
-.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 12px}
-.filters input{grid-column:1/-1}
-#focus{grid-column:1/-1}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-bottom:12px}
+.filters input,#focus{grid-column:1/-1}
 .filters input,.filters select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
 :focus-visible{outline:3px solid var(--rose);outline-offset:2px}
-main{padding:14px 16px 90px;max-width:1000px;margin:0 auto}
+main{padding-top:14px;padding-bottom:8px}
 .count{color:var(--mute);margin:0 0 10px;font-size:.9rem}
-.grid{display:grid;gap:12px;grid-template-columns:1fr}
-@media(min-width:720px){.grid{grid-template-columns:1fr 1fr}}
+.grid{display:grid;gap:12px}
 .card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--emerald);border-radius:12px;padding:14px}
 .card.star{border-left-color:var(--rose)}
+.head{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .card h2{margin:0;font-size:1.1rem;line-height:1.25}
-.person{margin:2px 0 0;color:var(--mute);font-size:.95rem}
+.sub{margin:2px 0 0;color:var(--mute);font-size:.95rem}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
 .chip{background:#E3EBE6;color:var(--emerald);border-radius:6px;padding:2px 8px;font-size:.82rem;font-weight:600}
 .chip.alt{background:#F5E8E3;color:var(--rose-d)}
+.tag{background:var(--rose);color:#14261D;border-radius:6px;padding:1px 8px;font-size:.78rem;font-weight:700}
 .loc{margin:0;color:var(--mute);font-size:.9rem}
 .notes{margin:8px 0 0;font-size:.93rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .notes.open{-webkit-line-clamp:unset;display:block}
@@ -46,9 +51,14 @@ main{padding:14px 16px 90px;max-width:1000px;margin:0 auto}
 .btn.wa{background:var(--emerald);color:#fff}
 .nonum{color:var(--mute);font-size:.9rem;margin:12px 0 0}
 .empty,#msg{padding:28px 8px;text-align:center;color:var(--mute)}
-footer{position:fixed;left:0;right:0;bottom:0;background:var(--emerald);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:10px;justify-content:center}
-footer a{color:#fff;text-decoration:none;font-weight:600;border:1px solid #5A7A6A;border-radius:999px;padding:8px 14px;font-size:.92rem}
-footer a.primary{background:var(--rose);border-color:var(--rose);color:#14261D}
+.empty a{display:inline-block;margin-top:8px;color:var(--rose-d);font-weight:700}
+footer{background:var(--emerald);color:#E7EEEA;margin-top:24px;padding:22px 0 calc(22px + env(safe-area-inset-bottom));text-align:center}
+footer h3{margin:0 0 4px;font-size:1rem}
+footer p{margin:0 0 12px;color:#B9CDC2;font-size:.9rem}
+.admins{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.admins a{display:block;border:1px solid #5A7A6A;border-radius:12px;padding:10px 8px;color:#fff;text-decoration:none;font-weight:600}
+.admins small{display:block;color:#B9CDC2;font-weight:400}
+footer .sheet{color:#fff;font-weight:600}
 dialog{border:0;border-radius:14px;padding:20px;max-width:340px;width:calc(100% - 32px)}
 dialog::backdrop{background:rgba(15,42,30,.75)}
 dialog h2{margin:0 0 6px}
@@ -60,28 +70,40 @@ dialog button{width:100%;padding:12px;border:0;border-radius:10px;background:var
 </head>
 <body>
 <header>
-  <img src="logo.png" alt="Al Maidan" width="149" height="112">
-  <p>UAE events and production field directory</p>
+  <div class="wrap">
+    <img src="logo.png" alt="Al Maidan" width="149" height="112">
+    <p>UAE events and production field directory</p>
+    <div class="cta" id="cta"></div>
+  </div>
 </header>
 <div class="bar">
-  <nav id="tabs" role="tablist" aria-label="Departments"></nav>
-  <div class="filters">
-    <input id="q" type="search" placeholder="Search name, service or city" aria-label="Search">
-    <select id="dept" aria-label="Department"></select>
-    <select id="spec" aria-label="Role"></select>
-    <select id="focus" aria-label="Industry">
-      <option value="all">All industries</option>
-      <option value="film">Film and media</option>
-      <option value="live">Events</option>
-    </select>
+  <div class="wrap">
+    <nav id="tabs" role="tablist" aria-label="Categories"></nav>
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search name, service or city" aria-label="Search">
+      <select id="dept" aria-label="Department"></select>
+      <select id="spec" aria-label="Role"></select>
+      <select id="focus" aria-label="Industry">
+        <option value="all">All industries</option>
+        <option value="film">Film and media</option>
+        <option value="live">Events</option>
+      </select>
+    </div>
   </div>
 </div>
-<main>
+<main class="wrap">
   <p id="msg">Loading the directory...</p>
   <p class="count" id="count" hidden></p>
   <div class="grid" id="list"></div>
 </main>
-<footer id="foot"></footer>
+<footer>
+  <div class="wrap">
+    <h3>Need help? Message an admin</h3>
+    <p>Questions, corrections or listing requests</p>
+    <div class="admins" id="admins"></div>
+    <a class="sheet" id="sheet" target="_blank" rel="noopener">View the full directory sheet</a>
+  </div>
+</footer>
 <dialog id="gate">
   <h2>Members only</h2>
   <p>Enter the access code from the Al Maidan WhatsApp group.</p>
@@ -90,15 +112,21 @@ dialog button{width:100%;padding:12px;border:0;border-radius:10px;background:var
   <button id="go">Open directory</button>
 </dialog>
 <script>
-/* Set these three values once. */
+/* Settings */
 const API_URL = "https://script.google.com/macros/s/AKfycbwD01NY3nuKBwYzcWIE4IGwxLxxpwBaeEv5_7Dk2DLMZXetA84KJs-fhfCYVjta-0ypLA/exec";
 const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSes_7RFqVROefShN8wW4js20FlOE13-dZWxmRbVLO_iRIMZpw/viewform";
 const GROUP_URL = "https://chat.whatsapp.com/J0aAb8Ldm892kqbjKAj8MW";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/1ZZbrs8h76ddxuZSjI7C4crityTrypD-sjA8Esvrz3SA/edit";
+const ADMINS = [
+  {name: "Laila AlHorani", phone: "+971 543 97 6117"},
+  {name: "Sudha Lakkshmi", phone: "+971 56 859 9779"}
+];
 
 const $ = s => document.querySelector(s);
-let DATA = null, cur = 0;
+let DATA = null, cur = 0, STRUCT = [];
 
 function el(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
+function link(cls, text, href){const a=el("a",cls,text);a.href=href;a.target="_blank";a.rel="noopener";return a}
 
 function waNumber(p){
   const first=(p||"").split(/[\/,;]|\bor\b/i)[0];
@@ -112,7 +140,6 @@ function waNumber(p){
 
 async function load(){
   const code=localStorage.getItem("am_code")||"";
-  if(API_URL.startsWith("PASTE")){$("#msg").textContent="Setup needed: paste the web app URL into API_URL in index.html.";return}
   try{
     const r=await fetch(API_URL+"?code="+encodeURIComponent(code));
     const j=await r.json();
@@ -136,59 +163,114 @@ $("#go").onclick=()=>{
 };
 $("#code").addEventListener("keydown",e=>{if(e.key==="Enter")$("#go").click()});
 
+/* Header buttons, footer admins and sheet link */
+function chrome(){
+  const cta=$("#cta");cta.textContent="";
+  if(GROUP_URL)cta.append(link("join","Join the WhatsApp group",GROUP_URL));
+  cta.append(link("list","Get listed",FORM_URL));
+  if(!GROUP_URL)cta.style.gridTemplateColumns="1fr";
+  const ad=$("#admins");ad.textContent="";
+  ADMINS.forEach(a=>{
+    const n=waNumber(a.phone);
+    const x=link("",a.name,"https://wa.me/"+n);
+    const s=el("small","",a.phone);x.append(s);ad.append(x);
+  });
+  $("#sheet").href=SHEET_URL;
+}
+
+/* The department and role lists come from Backend_Logic (via the data bridge).
+   Anything in a listing that is not in those lists is added so nothing is hidden. */
+function buildStruct(){
+  const t=DATA.tabs[cur];
+  const out=(t.departments||[]).map(d=>({name:d.name,roles:d.roles.slice()}));
+  t.rows.forEach(r=>{
+    if(!r.dept)return;
+    let d=out.find(x=>x.name===r.dept);
+    if(!d){d={name:r.dept,roles:[]};out.push(d)}
+    if(r.role&&!d.roles.includes(r.role))d.roles.push(r.role);
+  });
+  STRUCT=out;
+}
+const countRows=(fn)=>DATA.tabs[cur].rows.filter(fn).length;
+const label=(name,n)=>n?name+" ("+n+")":name;
+
 function start(note){
   $("#msg").hidden=!note;if(note)$("#msg").textContent=note;
+  chrome();
   const nav=$("#tabs");nav.textContent="";
   DATA.tabs.forEach((t,i)=>{
     const b=el("button","",t.name);b.setAttribute("role","tab");b.setAttribute("aria-selected",i===cur);
-    b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));fillDept();render()};
+    b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));pickTab()};
     nav.append(b);
   });
-  const f=$("#foot");f.textContent="";
-  if(GROUP_URL){const a=el("a","","Join the group");a.href=GROUP_URL;a.target="_blank";a.rel="noopener";f.append(a)}
-  const g=el("a","primary","Get listed");g.href=FORM_URL;g.target="_blank";g.rel="noopener";f.append(g);
-  fillDept();render();
+  pickTab();
 }
+function pickTab(){buildStruct();fillDept();render()}
 
 function fillDept(){
   const d=$("#dept");d.textContent="";
-  const counts={};
-  DATA.tabs[cur].rows.forEach(r=>{if(r.dept)counts[r.dept]=(counts[r.dept]||0)+1});
   d.append(new Option("All departments",""));
-  Object.keys(counts).sort().forEach(k=>d.append(new Option(k+" ("+counts[k]+")",k)));
-  fillSpec();
+  STRUCT.forEach(x=>d.append(new Option(label(x.name,countRows(r=>r.dept===x.name)),x.name)));
+  fillRole();
 }
-function fillSpec(){
+function fillRole(){
   const s=$("#spec"),dp=$("#dept").value;s.textContent="";
-  const counts={};
-  DATA.tabs[cur].rows.forEach(r=>{if(r.role&&(!dp||r.dept===dp))counts[r.role]=(counts[r.role]||0)+1});
   s.append(new Option(dp?"All roles in "+dp:"All roles",""));
-  Object.keys(counts).sort().forEach(k=>s.append(new Option(k+" ("+counts[k]+")",k)));
+  const add=(parent,d,role)=>parent.append(new Option(label(role,countRows(r=>r.dept===d.name&&r.role===role)),role));
+  if(dp){
+    const d=STRUCT.find(x=>x.name===dp);
+    if(d)d.roles.forEach(r=>add(s,d,r));
+  }else{
+    STRUCT.forEach(d=>{
+      if(!d.roles.length)return;
+      const g=document.createElement("optgroup");g.label=d.name;
+      d.roles.forEach(r=>add(g,d,r));
+      s.append(g);
+    });
+  }
+}
+
+function headline(r,crew){
+  const comp=(r.company||"").trim(),person=(r.person||"").trim();
+  const realCo=comp&&!/^freelance\b/i.test(comp);
+  if(crew){
+    if(person)return {head:person,sub:realCo?comp:"",tag:"Individual"};
+    return {head:comp||"Unnamed",sub:"",tag:""};
+  }
+  if(realCo)return {head:comp,sub:person,tag:""};
+  return {head:person||comp||"Unnamed",sub:"",tag:person?"Individual":""};
 }
 
 function render(){
   const q=$("#q").value.trim().toLowerCase(),dp=$("#dept").value,sp=$("#spec").value,fo=$("#focus").value;
-  const rows=DATA.tabs[cur].rows.filter(r=>{
+  const t=DATA.tabs[cur],crew=String(t.num)==="1";
+  const rows=t.rows.filter(r=>{
     if(dp&&r.dept!==dp)return false;
     if(sp&&r.role!==sp)return false;
     const f=(r.focus||"").toLowerCase();
     if(fo==="film"&&f&&!/media|film|both/.test(f))return false;
     if(fo==="live"&&f&&!/live|event|both/.test(f))return false;
-    if(q&&![r.company,r.person,r.role,r.service,r.notes,r.location].join(" ").toLowerCase().includes(q))return false;
+    if(q&&![r.company,r.person,r.role,r.dept,r.service,r.notes,r.location].join(" ").toLowerCase().includes(q))return false;
     return true;
   });
   const list=$("#list");list.textContent="";
   const c=$("#count");c.hidden=false;c.textContent=rows.length+(rows.length===1?" listing":" listings");
-  if(!rows.length){list.append(el("p","empty","Nothing matches. Clear a filter or try another word."));return}
+  if(!rows.length){
+    const e=el("div","empty","No listings here yet. Know someone who fits?");
+    e.append(el("br"),link("","Get listed",FORM_URL));
+    list.append(e);return;
+  }
   rows.forEach(r=>{
     const card=el("article","card"+(r.star?" star":""));
-    const name=r.company||r.person||"Unnamed";
-    const h=el("h2","",name);h.dir="auto";card.append(h);
-    if(r.company&&r.person){const p=el("p","person",r.person);p.dir="auto";card.append(p)}
+    const h=headline(r,crew);
+    const top=el("div","head");
+    const t1=el("h2","",h.head);t1.dir="auto";top.append(t1);
+    if(h.tag)top.append(el("span","tag",h.tag));
+    card.append(top);
+    if(h.sub){const p=el("p","sub",h.sub);p.dir="auto";card.append(p)}
     const chips=el("div","chips");
     if(r.role)chips.append(el("span","chip",r.role));
     if(r.focus)chips.append(el("span","chip alt",r.focus));
-    if(!r.company)chips.append(el("span","chip alt","Individual"));
     card.append(chips);
     if(r.location)card.append(el("p","loc",r.location));
     const text=r.notes||r.service;
@@ -200,14 +282,16 @@ function render(){
     if(num){
       const a=el("div","acts");
       const w=el("a","btn wa","WhatsApp");w.href="https://wa.me/"+num;w.target="_blank";w.rel="noopener";
-      const t=el("a","btn","Call");t.href="tel:+"+num;
-      a.append(w,t);card.append(a);
+      const tl=el("a","btn","Call");tl.href="tel:+"+num;
+      a.append(w,tl);card.append(a);
     }else card.append(el("p","nonum","No number listed yet"));
     list.append(card);
   });
 }
 
-$("#q").oninput=render;$("#dept").onchange=()=>{fillSpec();render()};$("#spec").onchange=render;$("#focus").onchange=render;
+$("#q").oninput=render;
+$("#dept").onchange=()=>{fillRole();render()};
+$("#spec").onchange=render;$("#focus").onchange=render;
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 load();
 </script>
