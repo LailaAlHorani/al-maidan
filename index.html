@@ -23,6 +23,7 @@ nav button{flex:none;border:1px solid var(--line);background:#fff;color:var(--in
 nav button[aria-selected=true]{background:var(--emerald);border-color:var(--emerald);color:#fff}
 .filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 12px}
 .filters input{grid-column:1/-1}
+#focus{grid-column:1/-1}
 .filters input,.filters select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;font:inherit;color:var(--ink)}
 :focus-visible{outline:3px solid var(--rose);outline-offset:2px}
 main{padding:14px 16px 90px;max-width:1000px;margin:0 auto}
@@ -66,11 +67,12 @@ dialog button{width:100%;padding:12px;border:0;border-radius:10px;background:var
   <nav id="tabs" role="tablist" aria-label="Departments"></nav>
   <div class="filters">
     <input id="q" type="search" placeholder="Search name, service or city" aria-label="Search">
-    <select id="spec" aria-label="Specialty"></select>
-    <select id="focus" aria-label="Works in">
-      <option value="all">Film and events</option>
+    <select id="dept" aria-label="Department"></select>
+    <select id="spec" aria-label="Role"></select>
+    <select id="focus" aria-label="Industry">
+      <option value="all">All industries</option>
       <option value="film">Film and media</option>
-      <option value="live">Live events</option>
+      <option value="live">Events</option>
     </select>
   </div>
 </div>
@@ -139,30 +141,39 @@ function start(note){
   const nav=$("#tabs");nav.textContent="";
   DATA.tabs.forEach((t,i)=>{
     const b=el("button","",t.name);b.setAttribute("role","tab");b.setAttribute("aria-selected",i===cur);
-    b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));fillSpec();render()};
+    b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));fillDept();render()};
     nav.append(b);
   });
   const f=$("#foot");f.textContent="";
   if(GROUP_URL){const a=el("a","","Join the group");a.href=GROUP_URL;a.target="_blank";a.rel="noopener";f.append(a)}
   const g=el("a","primary","Get listed");g.href=FORM_URL;g.target="_blank";g.rel="noopener";f.append(g);
-  fillSpec();render();
+  fillDept();render();
 }
 
-function fillSpec(){
-  const s=$("#spec");s.textContent="";
+function fillDept(){
+  const d=$("#dept");d.textContent="";
   const counts={};
-  DATA.tabs[cur].rows.forEach(r=>{if(r.role)counts[r.role]=(counts[r.role]||0)+1});
-  s.append(new Option("All specialties","")); 
+  DATA.tabs[cur].rows.forEach(r=>{if(r.dept)counts[r.dept]=(counts[r.dept]||0)+1});
+  d.append(new Option("All departments",""));
+  Object.keys(counts).sort().forEach(k=>d.append(new Option(k+" ("+counts[k]+")",k)));
+  fillSpec();
+}
+function fillSpec(){
+  const s=$("#spec"),dp=$("#dept").value;s.textContent="";
+  const counts={};
+  DATA.tabs[cur].rows.forEach(r=>{if(r.role&&(!dp||r.dept===dp))counts[r.role]=(counts[r.role]||0)+1});
+  s.append(new Option(dp?"All roles in "+dp:"All roles",""));
   Object.keys(counts).sort().forEach(k=>s.append(new Option(k+" ("+counts[k]+")",k)));
 }
 
 function render(){
-  const q=$("#q").value.trim().toLowerCase(),sp=$("#spec").value,fo=$("#focus").value;
+  const q=$("#q").value.trim().toLowerCase(),dp=$("#dept").value,sp=$("#spec").value,fo=$("#focus").value;
   const rows=DATA.tabs[cur].rows.filter(r=>{
+    if(dp&&r.dept!==dp)return false;
     if(sp&&r.role!==sp)return false;
     const f=(r.focus||"").toLowerCase();
-    if(fo==="film"&&f&&!/media|both/.test(f))return false;
-    if(fo==="live"&&f&&!/live|both/.test(f))return false;
+    if(fo==="film"&&f&&!/media|film|both/.test(f))return false;
+    if(fo==="live"&&f&&!/live|event|both/.test(f))return false;
     if(q&&![r.company,r.person,r.role,r.service,r.notes,r.location].join(" ").toLowerCase().includes(q))return false;
     return true;
   });
@@ -196,7 +207,7 @@ function render(){
   });
 }
 
-$("#q").oninput=render;$("#spec").onchange=render;$("#focus").onchange=render;
+$("#q").oninput=render;$("#dept").onchange=()=>{fillSpec();render()};$("#spec").onchange=render;$("#focus").onchange=render;
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 load();
 </script>
