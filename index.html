@@ -9,18 +9,21 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Al Maidan Directory</title>
 <style>
-:root{--emerald:#0f3522;--ink:#14261D;--paper:#eef2ef;--card:#fff;--rose:#C48C80;--rose-d:#8A5547;--line:#D3DDD8;--mute:#55695F}
+:root{--emerald:#0f3522;--ink:#14261D;--paper:#F2F5F3;--card:#fff;--rose:#C48C80;--rose-d:#8A5547;--line:#D3DDD8;--mute:#55695F}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif}
 .wrap{max-width:720px;margin:0 auto;padding:0 16px}
-header{background:var(--emerald) url('banner.jpeg') center/cover no-repeat;color:#F2F5F3;padding:calc(14px + env(safe-area-inset-top)) 0 16px;text-align:center;border-bottom:2px solid var(--rose)}
+header{background:var(--emerald) url('banner.jpeg') center/cover no-repeat;border-bottom:2px solid var(--rose);color:#F2F5F3;padding:calc(14px + env(safe-area-inset-top)) 0 16px;text-align:center}
 header img{display:block;margin:0 auto;height:112px;width:auto}
 header p{margin:2px 0 12px;color:#C9B1A8;font-size:.9rem}
-.cta{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.langbar{display:flex;justify-content:flex-end;margin-bottom:8px;direction:ltr}
+.seg{display:inline-flex;border:1px solid #5A7A6A;border-radius:999px;overflow:hidden}
+.seg button{background:transparent;color:#E7EEEA;border:0;padding:7px 16px;font:inherit;font-weight:700;cursor:pointer;min-width:56px}
+.seg button[aria-pressed=true]{background:var(--rose);color:#14261D}
+.cta{display:grid;grid-template-columns:1fr;gap:10px}
 .cta a{display:block;padding:13px 10px;border-radius:12px;font-weight:700;text-decoration:none;font-size:1rem}
-.cta .join{background:var(--rose);color:#14261D}
-.cta .list{border:2px solid var(--rose);color:#F2F5F3}
+.cta .list{border:2px solid var(--rose);background:var(--rose);color:#14261D}
 .bar{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
 nav{display:flex;gap:8px;overflow-x:auto;padding:10px 0;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
@@ -33,8 +36,8 @@ nav button[aria-selected=true]{background:var(--emerald);border-color:var(--emer
 main{padding-top:14px;padding-bottom:8px}
 .count{color:var(--mute);margin:0 0 10px;font-size:.9rem}
 .grid{display:grid;gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--emerald);border-radius:12px;padding:14px}
-.card.star{border-left-color:var(--rose)}
+.card{background:var(--card);border:1px solid var(--line);border-inline-start:4px solid var(--emerald);border-radius:12px;padding:14px}
+.card.star{border-inline-start-color:var(--rose)}
 .head{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
 .card h2{margin:0;font-size:1.1rem;line-height:1.25}
 .sub{margin:2px 0 0;color:var(--mute);font-size:.95rem}
@@ -65,65 +68,236 @@ dialog h2{margin:0 0 6px}
 dialog input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;font:inherit;margin:10px 0}
 dialog button{width:100%;padding:12px;border:0;border-radius:10px;background:var(--emerald);color:#fff;font:inherit;font-weight:700;cursor:pointer}
 .err{color:#9B2C2C;font-size:.9rem;margin:0}
+html[dir=rtl] .card .sub,html[dir=rtl] .card .loc,html[dir=rtl] .card .notes,html[dir=rtl] .card .nonum{text-align:right}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
+    <div class="langbar"><div class="seg" role="group" aria-label="Language">
+      <button type="button" id="lEN" data-lang="en">EN</button>
+      <button type="button" id="lAR" data-lang="ar">عربي</button>
+    </div></div>
     <img src="logo.png" alt="Al Maidan" width="149" height="112">
-    <p>UAE events and production field directory</p>
+    <p data-i18n="tagline">UAE events and production field directory</p>
     <div class="cta" id="cta"></div>
   </div>
 </header>
 <div class="bar">
   <div class="wrap">
-    <nav id="tabs" role="tablist" aria-label="Categories"></nav>
+    <nav id="tabs" role="tablist" data-aria="ariaTabs" aria-label="Categories"></nav>
     <div class="filters">
-      <input id="q" type="search" placeholder="Search name, service or city" aria-label="Search">
-      <select id="dept" aria-label="Department"></select>
-      <select id="spec" aria-label="Role"></select>
-      <select id="focus" aria-label="Industry">
-        <option value="all">All industries</option>
-        <option value="film">Film and media</option>
-        <option value="live">Events</option>
+      <input id="q" type="search" data-ph="searchPh" data-aria="ariaSearch" placeholder="Search name, service or city" aria-label="Search">
+      <select id="dept" data-aria="ariaDept" aria-label="Department"></select>
+      <select id="spec" data-aria="ariaRole" aria-label="Role"></select>
+      <select id="focus" data-aria="ariaInd" aria-label="Industry">
+        <option value="all" data-i18n="allInd">All industries</option>
+        <option value="film" data-i18n="film">Film and media</option>
+        <option value="live" data-i18n="events">Events</option>
       </select>
     </div>
   </div>
 </div>
 <main class="wrap">
-  <p id="msg">Loading the directory...</p>
+  <p id="msg"></p>
   <p class="count" id="count" hidden></p>
   <div class="grid" id="list"></div>
 </main>
 <footer>
   <div class="wrap">
-    <h3>Need help? Message an admin</h3>
-    <p>Questions, corrections or listing requests</p>
+    <h3 data-i18n="helpTitle">Need help? Message an admin</h3>
+    <p data-i18n="helpSub">Questions, corrections or listing requests</p>
     <div class="admins" id="admins"></div>
-    <a class="sheet" id="sheet" target="_blank" rel="noopener">View the full directory sheet</a>
+    <a class="sheet" id="sheet" target="_blank" rel="noopener" data-i18n="sheet">View the full directory sheet</a>
   </div>
 </footer>
 <dialog id="gate">
-  <h2>Members only</h2>
-  <p>Enter the access code from the Al Maidan WhatsApp group.</p>
+  <h2 data-i18n="gateTitle">Members only</h2>
+  <p data-i18n="gateText">Enter the access code from the Al Maidan WhatsApp group.</p>
   <p class="err" id="gateErr"></p>
-  <input id="code" type="password" autocomplete="off" placeholder="Access code" aria-label="Access code">
-  <button id="go">Open directory</button>
+  <input id="code" type="password" autocomplete="off" data-ph="codePh" data-aria="codePh" placeholder="Access code" aria-label="Access code">
+  <button id="go" data-i18n="open">Open directory</button>
 </dialog>
 <script>
-/* Settings */
+/* ============ Settings ============ */
 const API_URL = "https://script.google.com/macros/s/AKfycbwD01NY3nuKBwYzcWIE4IGwxLxxpwBaeEv5_7Dk2DLMZXetA84KJs-fhfCYVjta-0ypLA/exec";
 const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSes_7RFqVROefShN8wW4js20FlOE13-dZWxmRbVLO_iRIMZpw/viewform";
-const GROUP_URL = "https://chat.whatsapp.com/J0aAb8Ldm892kqbjKAj8MW";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/1ZZbrs8h76ddxuZSjI7C4crityTrypD-sjA8Esvrz3SA/edit";
 const ADMINS = [
   {name: "Laila AlHorani", phone: "+971 543 97 6117"},
   {name: "Sudha Lakkshmi", phone: "+971 56 859 9779"}
 ];
 
+/* ============ Localization dictionary ============ */
+const UI = {
+  en: {
+    tagline:"UAE events and production field directory", list:"Get listed",
+    wa:"WhatsApp", call:"Call", more:"More", less:"Less", nonum:"No number listed yet",
+    helpTitle:"Need help? Message an admin", helpSub:"Questions, corrections or listing requests",
+    sheet:"View the full directory sheet", gateTitle:"Members only",
+    gateText:"Enter the access code from the Al Maidan WhatsApp group.", codePh:"Access code", open:"Open directory",
+    wrong:"Wrong or missing access code.", loading:"Loading the directory...",
+    offline:"Offline. Showing the last saved list.", failed:"The directory did not load. Check your connection and reopen the app.",
+    searchPh:"Search name, service or city", allDepts:"All departments", allRoles:"All roles", allRolesIn:"All roles in ",
+    allInd:"All industries", film:"Film and media", events:"Events",
+    empty:"No listings here yet. Know someone who fits?", company:"Company / Agency", freelancer:"Freelancer / Independent", unnamed:"Unnamed",
+    ariaTabs:"Categories", ariaSearch:"Search", ariaDept:"Department", ariaRole:"Role", ariaInd:"Industry",
+    pageTitle:"Al Maidan Directory"
+  },
+  ar: {
+    tagline:"دليل الميدان لقطاع الفعاليات والإنتاج في الإمارات", list:"سجّل في الدليل",
+    wa:"واتساب", call:"اتصال", more:"المزيد", less:"أقل", nonum:"لا يوجد رقم مدرج بعد",
+    helpTitle:"تحتاج مساعدة؟ راسل أحد المشرفين", helpSub:"أسئلة أو تصحيحات أو طلبات تسجيل",
+    sheet:"عرض ملف الدليل الكامل", gateTitle:"للأعضاء فقط",
+    gateText:"أدخل رمز الدخول من مجموعة الميدان على واتساب.", codePh:"رمز الدخول", open:"افتح الدليل",
+    wrong:"رمز الدخول غير صحيح أو مفقود.", loading:"جارٍ تحميل الدليل...",
+    offline:"أنت غير متصل. تظهر آخر قائمة محفوظة.", failed:"تعذّر تحميل الدليل. تحقق من اتصالك ثم أعد فتح التطبيق.",
+    searchPh:"ابحث بالاسم أو الخدمة أو المدينة", allDepts:"كل الأقسام", allRoles:"كل الأدوار", allRolesIn:"كل الأدوار في ",
+    allInd:"كل المجالات", film:"الأفلام والإعلام", events:"الفعاليات",
+    empty:"لا توجد إدراجات هنا بعد. هل تعرف من يناسب هذا القسم؟", company:"شركة / وكالة", freelancer:"مستقل / فريلانسر", unnamed:"بدون اسم",
+    ariaTabs:"الفئات", ariaSearch:"بحث", ariaDept:"القسم", ariaRole:"الدور", ariaInd:"المجال",
+    pageTitle:"دليل الميدان"
+  }
+};
+
+const TAB_AR = {
+  "1. Talent & Agencies":"المواهب والوكالات",
+  "2. AV, Camera & Tech":"الصوت والصورة والكاميرا والتقنية",
+  "3. Staging & Structures":"المسارح والهياكل",
+  "4. Art Direction & Décor":"الإخراج الفني والديكور",
+  "5. Site Ops, Locations & Logistics":"العمليات الميدانية والمواقع والخدمات اللوجستية"
+};
+const DEPT_AR = {
+  "Producers, Agents & Managers":"المنتجون ووكلاء المواهب",
+  "Talent":"المواهب",
+  "Production & Rentals":"الإنتاج والتأجير",
+  "AV, Camera & Broadcast":"الصوت والصورة والكاميرا والبث",
+  "Special Effects & Spectacle":"المؤثرات الخاصة والعروض",
+  "Technical Crew":"الطاقم الفني",
+  "Post-Production & Visual Effects":"ما بعد الإنتاج والمؤثرات البصرية",
+  "Core Staging & Rigging":"المسارح والتعليق والتركيب",
+  "Site Infrastructure & Enclosures":"البنية التحتية والمنشآت المؤقتة",
+  "Decor, Styling & Rentals":"الديكور والتنسيق والتأجير",
+  "Fabrication & Raw Materials":"التصنيع والمواد الخام",
+  "Builds, Surfaces & Print":"التنفيذ والأسطح والطباعة",
+  "Site Utilities":"مرافق الموقع",
+  "Transport & Logistics":"النقل والخدمات اللوجستية",
+  "Operations":"العمليات",
+  "Live Operations":"العمليات المباشرة",
+  "Support":"الدعم",
+  "Studios & Dedicated Venues":"الاستوديوهات والقاعات المخصصة",
+  "Practical, Outdoor & Specialty Locations":"المواقع الخارجية والخاصة"
+};
+const ROLE_AR = {
+  "Producers & Assistants":"المنتجون ومساعدوهم", "Casting Agents":"وكلاء الكاستينغ", "Influencer Managers":"مديرو المؤثرين",
+  "Actors, Models & Extras":"الممثلون والعارضون والكومبارس", "Voice-over Artists":"فنانو التعليق الصوتي",
+  "Content Creators":"صنّاع المحتوى", "Performers & Entertainment":"المؤدون والترفيه",
+  "MCs, Hosts & Presenters":"مقدمو الحفلات والمضيفون والمذيعون", "Hostesses":"المضيفات",
+  "Temp & Registration Staff":"الموظفون المؤقتون وموظفو التسجيل",
+  "Media Production house":"بيوت الإنتاج الإعلامي", "Equipment Rentals":"تأجير المعدات",
+  "Camera, Lens, Grip & Cranes":"الكاميرات والعدسات ومعدات الدعم والرافعات", "Lighting":"الإضاءة", "Sound & Audio":"الصوتيات",
+  "LED, Projection & XR":"شاشات LED والعرض والواقع الممتد", "Live Streaming & OB Vans":"البث المباشر وسيارات البث",
+  "AV & Show Technology":"تقنيات الصوت والصورة والعروض", "Lasers & SFX":"الليزر والمؤثرات الخاصة",
+  "Pyrotechnics & Fireworks":"الألعاب النارية والمفرقعات", "Drone Light Shows & Holograms":"عروض الدرون الضوئية والهولوغرام",
+  "Camera Operators & DOPs":"مشغلو الكاميرا ومدراء التصوير", "Lighting, Gaffers & Grips":"الإضاءة وفنيو الإضاءة والدعم",
+  "Sound Crew":"طاقم الصوت", "Photographers":"المصورون", "Drone & Underwater Operators":"مشغلو الدرون والتصوير تحت الماء",
+  "DIT":"فني معالجة البيانات الرقمية (DIT)", "Editing & Color Grading":"المونتاج وتصحيح الألوان",
+  "Motion Graphics":"الموشن غرافيك", "VFX & Animators":"المؤثرات البصرية والرسوم المتحركة",
+  "Stages & Platforms":"المسارح والمنصات", "Trussing & Rigging":"الهياكل المعدنية والتعليق",
+  "Scaffolding & Access Equipment":"السقالات ومعدات الوصول", "Tents & Domes":"الخيام والقباب", "Barriers & Fencing":"الحواجز والأسوار",
+  "Production Designer, Art Directors & Prop Masters":"مصمم الإنتاج، المخرجون الفنيون ومسؤولو الإكسسوارات",
+  "Costumes & Wardrobe":"الأزياء والملابس", "Hair & Makeup":"الشعر والمكياج",
+  "Florals & Botanical":"الزهور والنباتات", "Furniture Rentals":"تأجير الأثاث",
+  "Wood & Metal Fabrication":"تصنيع الخشب والمعادن", "Acrylic, Laser & CNC":"الأكريليك والليزر وCNC",
+  "Raw Materials suppliers":"موردو المواد الخام", "Craftsmen & Builders":"الحرفيون والبنّاؤون",
+  "Exhibition Stands & Booths":"أجنحة المعارض والأكشاك", "Carpets & Flooring":"السجاد والأرضيات",
+  "Fabric, Textiles & Backdrops":"الأقمشة والمنسوجات والخلفيات", "Party Materials":"مستلزمات الحفلات", "Print Services":"خدمات الطباعة",
+  "Power & Generators":"الطاقة والمولدات", "AC & Cooling":"التكييف والتبريد", "Sanitation & Waste":"الصرف الصحي والنفايات",
+  "Catering & Food Waste Disposal":"التموين والتخلص من مخلفات الطعام", "Freight, Trucking & Heavy Machinery":"الشحن والنقل والمعدات الثقيلة",
+  "Picture Cars & Vehicle Rentals":"سيارات التصوير وتأجير المركبات", "Production Managers, Assistants & Fixers":"مديرو الإنتاج ومساعدوهم والمنسقون الميدانيون",
+  "Location Managers":"مديرو المواقع", "Runners & Helpers":"المساعدون والعاملون الميدانيون",
+  "Event Organisers & Activations":"منظمو الفعاليات والأنشطة الترويجية", "Stage Managers & Show Callers":"مديرو المسرح ومنسقو العرض",
+  "Stagehands & Riggers":"عمال المسرح وفنيو التعليق", "Medics & Site Safety Officers":"المسعفون ومسؤولو السلامة",
+  "Security & Crowd Management":"الأمن وإدارة الحشود", "Production Support, Translators & Legal":"دعم الإنتاج والمترجمون والشؤون القانونية",
+  "Sound Stages & Studios":"الاستوديوهات وقاعات التصوير", "Event Halls, Arenas & Ballrooms":"قاعات الفعاليات والساحات وقاعات الحفلات",
+  "Villas, Outdoor & Specialty Locations":"الفلل والمواقع الخارجية والخاصة"
+};
+const FOCUS_AR = {
+  "All industries":"كل المجالات", "Film and media":"الأفلام والإعلام", "Events":"الفعاليات"
+};
+/* Cities and areas people may type in Arabic */
+const LOC_AR = {
+  "Dubai":["دبي"], "Abu Dhabi":["أبوظبي","ابو ظبي"], "Sharjah":["الشارقة","الشارقه"], "Ajman":["عجمان"],
+  "Ras Al Khaimah":["رأس الخيمة","راس الخيمة"], "Fujairah":["الفجيرة"], "Umm Al Quwain":["أم القيوين","ام القيوين"],
+  "UAE":["الإمارات","الامارات"], "Al Quoz":["القوز"], "Downtown":["وسط المدينة","داون تاون"],
+  "Media City":["مدينة دبي للإعلام","ميديا سيتي"], "Studio City":["مدينة دبي للاستوديوهات","ستوديو سيتي"]
+};
+const ALIASES = {
+  "Photographers":["مصور","تصوير","فوتوغراف"], "Camera, Lens, Grip & Cranes":["كاميرا","كاميرات","عدسات","تصوير"],
+  "Camera Operators & DOPs":["كاميرا","مصور فيديو","تصوير فيديو"], "Hair & Makeup":["ميكب","ميك اب","تجميل","حلاق","شعر"],
+  "Lighting":["انارة","إنارة","اضاءة"], "Sound & Audio":["صوت","سماعات","ساوند"], "Sound Crew":["صوت","ساوند"],
+  "LED, Projection & XR":["شاشات","شاشة","ليد"], "Tents & Domes":["خيمة","خيام","مظلات"],
+  "Event Organisers & Activations":["منظم","تنظيم فعاليات","ايفنت","ايفنتس"],
+  "Hostesses":["مضيفة","مضيفات","استقبال","ضيافة"],
+  "Catering & Food Waste Disposal":["طعام","اكل","كيترنج","وجبات"], "Security & Crowd Management":["حراسة","امن","حراس"],
+  "Furniture Rentals":["كراسي","طاولات","كنب","مجلس","مجالس"], "Florals & Botanical":["ورد","زهور","ورود"],
+  "Print Services":["طباعة","بنرات","لافتات"], "Power & Generators":["كهرباء","مولد","مولدات"],
+  "AC & Cooling":["مكيفات","مكيف"], "Freight, Trucking & Heavy Machinery":["نقل","شحن","شاحنات"],
+  "Production Support, Translators & Legal":["مترجم","ترجمة"], "Performers & Entertainment":["راقص","مغني","فنان","عرض","ترفيه"],
+  "MCs, Hosts & Presenters":["مذيع","مقدم","عريف"], "Drone & Underwater Operators":["درون","طائرة مسيرة","طائرات مسيرة"],
+  "Voice-over Artists":["تعليق صوتي","فويس"], "Editing & Color Grading":["مونتاج","تحرير","تلوين"],
+  "Production Managers, Assistants & Fixers":["مدير انتاج","منسق","فيكسر"], "Stagehands & Riggers":["عمال"],
+  "Sound Stages & Studios":["استوديو","ستديو","استديو"], "Villas, Outdoor & Specialty Locations":["فيلا","فلل","يخت","قارب","مراكب"],
+  "Actors, Models & Extras":["ممثل","عارض","موديل","كومبارس"],
+  "Wood & Metal Fabrication":["نجارة","حدادة","خشب"], "Casting Agents":["كاستنج","كاستينج"]
+};
+
+const AR_RE = /[\u0600-\u06FF]/;
+const norm = s => String(s||"").replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/[إأآٱ]/g,"ا").replace(/ى/g,"ي")
+  .replace(/ة/g,"ه").replace(/ؤ/g,"و").replace(/ئ/g,"ي").toLowerCase().trim();
+const stripAl = w => (w.length>3 && w.startsWith("ال")) ? w.slice(2) : w;
+const STOP = new Set(["في","من","الي","علي","مع","عن","او","و","ال","هل","كل"].map(norm));
+
+const REV = {}, IDX = [];
+(function build(){
+  const add = (en, list) => {
+    const set = new Set();
+    list.forEach(a => { const n = norm(a); set.add(n); set.add(n.split(" ").map(stripAl).join(" ")); });
+    IDX.push({en, ar:[...set]});
+  };
+  [DEPT_AR, ROLE_AR, FOCUS_AR].forEach(m => Object.keys(m).forEach(en => {
+    REV[norm(m[en])] = en;
+    add(en, [m[en]].concat(ALIASES[en] || []));
+  }));
+  Object.keys(LOC_AR).forEach(en => add(en, LOC_AR[en]));
+})();
+const toEn = v => (v && AR_RE.test(v)) ? (REV[norm(v)] || v) : v;
+
+function arNeedles(raw){
+  const tk = stripAl(norm(raw));
+  if(tk.length < 2 || STOP.has(tk)) return [];
+  const out = new Set();
+  IDX.forEach(e => { if(e.ar.some(p => p.includes(tk))) out.add(e.en.toLowerCase()); });
+  return [...out];
+}
+function qMatch(q, hay){
+  if(!q) return true;
+  if(!AR_RE.test(q)) return hay.includes(q.toLowerCase());
+  return q.split(/[\s،,؛;]+/).filter(Boolean).every(tk => {
+    if(!AR_RE.test(tk)) return hay.includes(tk.toLowerCase());
+    const needles = arNeedles(tk);
+    return needles.length ? needles.some(n => hay.includes(n)) : false;
+  });
+}
+
+let lang = localStorage.getItem("am_lang") ||
+  ((navigator.language||"").toLowerCase().startsWith("ar") ? "ar" : "en");
+const t = k => (UI[lang][k] != null ? UI[lang][k] : UI.en[k]);
+const tr = (map, en) => (lang === "ar" && map[en]) ? map[en] : en;
+
 const $ = s => document.querySelector(s);
-let DATA = null, cur = 0, STRUCT = [];
+let DATA = null, cur = 0, STRUCT = [], msgKey = "loading", gateKey = "";
 
 function el(tag, cls, text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e}
 function link(cls, text, href){const a=el("a",cls,text);a.href=href;a.target="_blank";a.rel="noopener";return a}
@@ -138,23 +312,51 @@ function waNumber(p){
   return d;
 }
 
+function showMsg(){
+  const m=$("#msg");
+  if(!msgKey){m.hidden=true;return}
+  m.hidden=false;m.textContent=t(msgKey);
+}
+
+function applyStatic(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+  document.title = t("pageTitle");
+  document.querySelectorAll("[data-i18n]").forEach(e => e.textContent = t(e.dataset.i18n));
+  document.querySelectorAll("[data-ph]").forEach(e => e.placeholder = t(e.dataset.ph));
+  document.querySelectorAll("[data-aria]").forEach(e => e.setAttribute("aria-label", t(e.dataset.aria)));
+  $("#gateErr").textContent = gateKey ? t(gateKey) : "";
+  $("#lEN").setAttribute("aria-pressed", lang === "en");
+  $("#lAR").setAttribute("aria-pressed", lang === "ar");
+  showMsg();
+}
+
+function setLang(l){
+  lang = l;
+  localStorage.setItem("am_lang", l);
+  applyStatic();
+  if(DATA){ chrome(); buildNav(); fillDept(true); render(); }
+}
+$("#lEN").onclick = () => setLang("en");
+$("#lAR").onclick = () => setLang("ar");
+
 async function load(){
   const code=localStorage.getItem("am_code")||"";
   try{
     const r=await fetch(API_URL+"?code="+encodeURIComponent(code));
     const j=await r.json();
-    if(j.error){ask(code?j.error:"");return}
+    if(j.error){ask(code?"wrong":"");return}
     localStorage.setItem("am_data",JSON.stringify(j));
-    DATA=j;start();
+    DATA=j;msgKey="";start();
   }catch(e){
     const c=localStorage.getItem("am_data");
-    if(c){DATA=JSON.parse(c);start("Offline. Showing the last saved list.")}
-    else $("#msg").textContent="The directory did not load. Check your connection and reopen the app."
+    if(c){DATA=JSON.parse(c);msgKey="offline";start()}
+    else{msgKey="failed";showMsg()}
   }
 }
 
-function ask(err){
-  $("#gateErr").textContent=err||"";
+function ask(key){
+  gateKey=key;$("#gateErr").textContent=key?t(key):"";
   const g=$("#gate");if(!g.open)g.showModal();
 }
 $("#go").onclick=()=>{
@@ -163,27 +365,22 @@ $("#go").onclick=()=>{
 };
 $("#code").addEventListener("keydown",e=>{if(e.key==="Enter")$("#go").click()});
 
-/* Header buttons, footer admins and sheet link */
 function chrome(){
   const cta=$("#cta");cta.textContent="";
-  if(GROUP_URL)cta.append(link("join","Join the WhatsApp group",GROUP_URL));
-  cta.append(link("list","Get listed",FORM_URL));
-  if(!GROUP_URL)cta.style.gridTemplateColumns="1fr";
+  cta.append(link("list",t("list"),FORM_URL));
   const ad=$("#admins");ad.textContent="";
   ADMINS.forEach(a=>{
     const n=waNumber(a.phone);
     const x=link("",a.name,"https://wa.me/"+n);
-    const s=el("small","",a.phone);x.append(s);ad.append(x);
+    const s=el("small","",a.phone);s.dir="ltr";x.append(s);ad.append(x);
   });
   $("#sheet").href=SHEET_URL;
 }
 
-/* The department and role lists come from Backend_Logic (via the data bridge).
-   Anything in a listing that is not in those lists is added so nothing is hidden. */
 function buildStruct(){
-  const t=DATA.tabs[cur];
-  const out=(t.departments||[]).map(d=>({name:d.name,roles:d.roles.slice()}));
-  t.rows.forEach(r=>{
+  const tab=DATA.tabs[cur];
+  const out=(tab.departments||[]).map(d=>({name:d.name,roles:d.roles.slice()}));
+  tab.rows.forEach(r=>{
     if(!r.dept)return;
     let d=out.find(x=>x.name===r.dept);
     if(!d){d={name:r.dept,roles:[]};out.push(d)}
@@ -194,105 +391,122 @@ function buildStruct(){
 const countRows=(fn)=>DATA.tabs[cur].rows.filter(fn).length;
 const label=(name,n)=>n?name+" ("+n+")":name;
 
-function start(note){
-  $("#msg").hidden=!note;if(note)$("#msg").textContent=note;
-  chrome();
+function buildNav(){
   const nav=$("#tabs");nav.textContent="";
-  DATA.tabs.forEach((t,i)=>{
-    const b=el("button","",t.name);b.setAttribute("role","tab");b.setAttribute("aria-selected",i===cur);
+  DATA.tabs.forEach((tb,i)=>{
+    const b=el("button","",tr(TAB_AR,tb.name));b.setAttribute("role","tab");b.setAttribute("aria-selected",i===cur);
     b.onclick=()=>{cur=i;[...nav.children].forEach((c,k)=>c.setAttribute("aria-selected",k===i));pickTab()};
     nav.append(b);
   });
-  pickTab();
 }
-function pickTab(){buildStruct();fillDept();render()}
+function start(){
+  showMsg();chrome();buildNav();pickTab();
+}
+function pickTab(){buildStruct();fillDept(false);render()}
 
-function fillDept(){
-  const d=$("#dept");d.textContent="";
-  d.append(new Option("All departments",""));
-  STRUCT.forEach(x=>d.append(new Option(label(x.name,countRows(r=>r.dept===x.name)),x.name)));
-  fillRole();
+function setIfExists(sel,val){if(val&&[...sel.options].some(o=>o.value===val))sel.value=val}
+function fillDept(keep){
+  const d=$("#dept"),prev=keep?d.value:"";d.textContent="";
+  d.append(new Option(t("allDepts"),""));
+  STRUCT.forEach(x=>d.append(new Option(label(tr(DEPT_AR,x.name),countRows(r=>r.dept===x.name)),x.name)));
+  setIfExists(d,prev);
+  fillRole(keep);
 }
-function fillRole(){
-  const s=$("#spec"),dp=$("#dept").value;s.textContent="";
-  s.append(new Option(dp?"All roles in "+dp:"All roles",""));
-  const add=(parent,d,role)=>parent.append(new Option(label(role,countRows(r=>r.dept===d.name&&r.role===role)),role));
+function fillRole(keep){
+  const s=$("#spec"),prev=keep?s.value:"",dp=toEn($("#dept").value);s.textContent="";
+  s.append(new Option(dp?t("allRolesIn")+tr(DEPT_AR,dp):t("allRoles"),""));
+  const add=(parent,d,role)=>parent.append(new Option(label(tr(ROLE_AR,role),countRows(r=>r.dept===d.name&&r.role===role)),role));
   if(dp){
     const d=STRUCT.find(x=>x.name===dp);
     if(d)d.roles.forEach(r=>add(s,d,r));
   }else{
     STRUCT.forEach(d=>{
       if(!d.roles.length)return;
-      const g=document.createElement("optgroup");g.label=d.name;
+      const g=document.createElement("optgroup");g.label=tr(DEPT_AR,d.name);
       d.roles.forEach(r=>add(g,d,r));
       s.append(g);
     });
   }
+  setIfExists(s,prev);
 }
 
-function headline(r,crew){
+function headline(r){
   const comp=(r.company||"").trim(),person=(r.person||"").trim();
   const realCo=comp&&!/^freelance\b/i.test(comp);
-  if(crew){
-    if(person)return {head:person,sub:realCo?comp:"",tag:"Individual"};
-    return {head:comp||"Unnamed",sub:"",tag:""};
+  const tagData=(r.entity||"").trim();
+  let mappedTag = "";
+  if(tagData.toLowerCase().includes("company")) mappedTag = t("company");
+  if(tagData.toLowerCase().includes("freelancer")) mappedTag = t("freelancer");
+  
+  if(realCo && person) return {head:comp,sub:person,tag:mappedTag};
+  if(realCo && !person) return {head:comp,sub:"",tag:mappedTag};
+  if(!realCo && person) return {head:person,sub:"",tag:mappedTag};
+  return {head:person||comp||t("unnamed"),sub:"",tag:mappedTag};
+}
+
+function countText(n){
+  if(lang==="ar"){
+    if(n===0)return "لا توجد نتائج";
+    if(n===1)return "نتيجة واحدة";
+    if(n===2)return "نتيجتان";
+    return n+(n<=10?" نتائج":" نتيجة");
   }
-  if(realCo)return {head:comp,sub:person,tag:""};
-  return {head:person||comp||"Unnamed",sub:"",tag:person?"Individual":""};
+  return n+(n===1?" listing":" listings");
 }
 
 function render(){
-  const q=$("#q").value.trim().toLowerCase(),dp=$("#dept").value,sp=$("#spec").value,fo=$("#focus").value;
-  const t=DATA.tabs[cur],crew=String(t.num)==="1";
-  const rows=t.rows.filter(r=>{
+  const q=$("#q").value.trim(),dp=toEn($("#dept").value),sp=toEn($("#spec").value),fo=$("#focus").value;
+  const tab=DATA.tabs[cur];
+  const rows=tab.rows.filter(r=>{
     if(dp&&r.dept!==dp)return false;
     if(sp&&r.role!==sp)return false;
     const f=(r.focus||"").toLowerCase();
-    if(fo==="film"&&f&&!/media|film|both/.test(f))return false;
-    if(fo==="live"&&f&&!/live|event|both/.test(f))return false;
-    if(q&&![r.company,r.person,r.role,r.dept,r.service,r.notes,r.location].join(" ").toLowerCase().includes(q))return false;
-    return true;
+    if(fo==="film"&&f&&!/media|film|all/.test(f))return false;
+    if(fo==="live"&&f&&!/event|all/.test(f))return false;
+    const hay=[r.company,r.person,r.role,r.dept,r.service,r.notes,r.location,r.focus].join(" ").toLowerCase();
+    return qMatch(q,hay);
   });
   const list=$("#list");list.textContent="";
-  const c=$("#count");c.hidden=false;c.textContent=rows.length+(rows.length===1?" listing":" listings");
+  const c=$("#count");c.hidden=false;c.textContent=countText(rows.length);
   if(!rows.length){
-    const e=el("div","empty","No listings here yet. Know someone who fits?");
-    e.append(el("br"),link("","Get listed",FORM_URL));
+    const e=el("div","empty",t("empty"));
+    e.append(el("br"),link("",t("list"),FORM_URL));
     list.append(e);return;
   }
   rows.forEach(r=>{
     const card=el("article","card"+(r.star?" star":""));
-    const h=headline(r,crew);
+    const h=headline(r);
     const top=el("div","head");
     const t1=el("h2","",h.head);t1.dir="auto";top.append(t1);
     if(h.tag)top.append(el("span","tag",h.tag));
     card.append(top);
     if(h.sub){const p=el("p","sub",h.sub);p.dir="auto";card.append(p)}
     const chips=el("div","chips");
-    if(r.role)chips.append(el("span","chip",r.role));
-    if(r.focus)chips.append(el("span","chip alt",r.focus));
+    if(r.role)chips.append(el("span","chip",tr(ROLE_AR,r.role)));
+    if(r.focus)chips.append(el("span","chip alt",tr(FOCUS_AR,r.focus)));
     card.append(chips);
-    if(r.location)card.append(el("p","loc",r.location));
+    if(r.location){const l=el("p","loc",r.location);l.dir="auto";card.append(l)}
     const text=r.notes||r.service;
     if(text){
       const n=el("p","notes",text);n.dir="auto";card.append(n);
-      if(text.length>140){const m=el("button","more","More");m.onclick=()=>{const o=n.classList.toggle("open");m.textContent=o?"Less":"More"};card.append(m)}
+      if(text.length>140){const m=el("button","more",t("more"));m.onclick=()=>{const o=n.classList.toggle("open");m.textContent=o?t("less"):t("more")};card.append(m)}
     }
     const num=waNumber(r.phone);
     if(num){
       const a=el("div","acts");
-      const w=el("a","btn wa","WhatsApp");w.href="https://wa.me/"+num;w.target="_blank";w.rel="noopener";
-      const tl=el("a","btn","Call");tl.href="tel:+"+num;
+      const w=el("a","btn wa",t("wa"));w.href="https://wa.me/"+num;w.target="_blank";w.rel="noopener";
+      const tl=el("a","btn",t("call"));tl.href="tel:+"+num;
       a.append(w,tl);card.append(a);
-    }else card.append(el("p","nonum","No number listed yet"));
+    }else card.append(el("p","nonum",t("nonum")));
     list.append(card);
   });
 }
 
 $("#q").oninput=render;
-$("#dept").onchange=()=>{fillRole();render()};
+$("#dept").onchange=()=>{fillRole(false);render()};
 $("#spec").onchange=render;$("#focus").onchange=render;
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+applyStatic();
 load();
 </script>
 </body>
